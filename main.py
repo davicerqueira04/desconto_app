@@ -1,14 +1,14 @@
-from src.controllers.pedido_controller import PedidoController
-from src.repositories.pedido_repository import PedidoRepository
-from src.services.pedido_service import PedidoService
-from src.models.pedido import Pedido
-from src.models.desconto import DescontoNormal, DescontoVIP, DescontoPremium
+from src.app.framework.database.memory_database import MemoryDatabase
+from src.app.adapters.repositories.memory_pedido import MemoryPedidoRepository
+from src.app.use_cases.criar_pedido import CriarPedido
+from src.app.adapters.controllers.pedido_controller import PedidoController
 
-
+    
 if __name__ == "__main__":
-    repo = PedidoRepository()
-    service = PedidoService(repo)
-    controller = PedidoController(service)
+    database = MemoryDatabase()
+    repo = MemoryPedidoRepository(database)
+    criar_pedido = CriarPedido(pedido_gateway)
+    controller = PedidoController(criar_pedido_use_case)
 
     pedido1 = Pedido("Cliente 1", DescontoNormal())
     pedido1.valor_original = 100.0
@@ -17,8 +17,8 @@ if __name__ == "__main__":
     pedido3 = Pedido("Cliente 3", DescontoPremium())
     pedido3.valor_original = 100.0
 
-    controller.adicionar_pedido(pedido1)
-    controller.adicionar_pedido(pedido2)
-    controller.adicionar_pedido(pedido3)
+    controller.criar_pedido("Cliente 1", 100.0, "normal")
+    controller.criar_pedido("Cliente 2", 100.0, "vip")
+    controller.criar_pedido("Cliente 3", 100.0, "premium")
 
-    controller.processar_pedidos()
+    controller.listar_pedidos()
